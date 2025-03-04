@@ -1,4 +1,4 @@
-name: Go App with Docker & SSH
+name: telegram-bot
 
 on:
   push:

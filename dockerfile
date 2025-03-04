@@ -8,6 +8,6 @@ RUN go mod download
 
 COPY . ./
 
-RUN go build -o /mercury-loads-api
+RUN go build -o /telegram-bot
 
-CMD [ "/mercury-loads-api" ]
+CMD [ "/telegram-bot" ]

@@ -19,8 +19,8 @@ jobs:
 
     - name: Rodar o container
       run: |
-        docker run -d --name go-container -p 8080:3000 telegram-bot
+        docker run -d --name telegram-bot -p 8080:3000 telegram-bot
         sleep 5  # Aguarde a inicialização
 
     - name: Testar aplicação Go
-      run: curl -s http://localhost:8080/health
+      run: curl -s http://localhost:3000/health

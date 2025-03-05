@@ -13,7 +13,7 @@ jobs:
     runs-on: self-hosted
     env:
         APP_ENV: production
-        DATABASE_URL: ${{ secrets.TELEGRAM_API_TOKEN }}  
+        TELEGRAM_API_TOKEN: ${{ secrets.TELEGRAM_API_TOKEN }}  
 
     steps:
     - uses: actions/checkout@v4

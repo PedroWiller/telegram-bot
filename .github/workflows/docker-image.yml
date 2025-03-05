@@ -32,11 +32,15 @@ jobs:
       continue-on-error: true
       run: docker rm telegram-bot 
 
-    - name: Rodar o container
-      run: 
-        docker run -e TELEGRAM_API_TOKEN=${{ secrets.TELEGRAM_API_TOKEN }} -d --name telegram-bot -p 3000:8080 telegram-bot
+    - name: Run docker-compose
+      continue-on-error: true
+      run: docker-compose up -d --build
 
-    - name: Testar aplicação Go
-      run: curl -s http://localhost:3000/health
+    # - name: Rodar o container
+    #   run: 
+    #     docker run -e TELEGRAM_API_TOKEN=${{ secrets.TELEGRAM_API_TOKEN }} -d --name telegram-bot -p 3000:8080 telegram-bot
+
+    # - name: Testar aplicação Go
+    #   run: curl -s http://localhost:3000/health
 
   

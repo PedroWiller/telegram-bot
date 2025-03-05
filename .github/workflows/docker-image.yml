@@ -18,9 +18,11 @@ jobs:
       run: docker build -t telegram-bot .
 
     - name: Apagar lixo step 1
+      continue-on-error: true
       run: docker stop telegram-bot 
 
     - name: Apagar lixo step 2
+      continue-on-error: true
       run: docker rm telegram-bot 
 
     - name: Rodar o container

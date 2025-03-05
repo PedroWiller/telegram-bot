@@ -11,6 +11,9 @@ jobs:
   build:
 
     runs-on: self-hosted
+    env:
+        APP_ENV: production
+        DATABASE_URL: ${{ secrets.TELEGRAM_API_TOKEN }}  
 
     steps:
     - uses: actions/checkout@v4
@@ -31,3 +34,5 @@ jobs:
 
     - name: Testar aplicação Go
       run: curl -s http://localhost:3000/health
+
+  

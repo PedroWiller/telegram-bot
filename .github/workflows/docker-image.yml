@@ -18,8 +18,8 @@ jobs:
       run: echo "TELEGRAM_API_TOKEN=${{ secrets.TELEGRAM_API_TOKEN }}" >> $GITHUB_ENV
     - name: Exportar variável GEMINI_API_KEY para o ambiente
       run: echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" >> $GITHUB_ENV
-      
+
     - uses: actions/checkout@v4
     - name: Run docker-compose
       continue-on-error: true
-      run: docker compose up 
+      run: docker compose up -d --build

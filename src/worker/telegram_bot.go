@@ -1,8 +1,12 @@
 package worker
 
-import service "telegram-bot/src/service/telegram"
+import (
+	serviceGemini "telegram-bot/src/service/gemini"
+	service "telegram-bot/src/service/telegram"
+)
 
 func Start() {
-	telegramService := service.NewTelegramService()
+	geminiService := serviceGemini.NewGeminiService()
+	telegramService := service.NewTelegramService(geminiService)
 	telegramService.Send()
 }

@@ -8,6 +8,7 @@ import (
 var (
 	PORT             string
 	TelegramApiToken string
+	GeminiApiToken   string
 )
 
 func Start() error {
@@ -19,6 +20,10 @@ func Start() error {
 	TelegramApiToken = os.Getenv("TELEGRAM_API_TOKEN")
 	if TelegramApiToken == "" {
 		return fmt.Errorf("Error to load TELEGRAM_API_TOKEN")
+	}
+	GeminiApiToken = os.Getenv("GEMINI_API_KEY")
+	if GeminiApiToken == "" {
+		return fmt.Errorf("Error to load GEMINI_API_KEY")
 	}
 
 	return nil

@@ -8,5 +8,17 @@ services:
     restart: always
     environment:
       - TELEGRAM_API_TOKEN=${TELEGRAM_API_TOKEN}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
     ports:
       - "3000:8080"
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+        - mongo-data:/data/db
+  
+volumes:
+  mongo-data:

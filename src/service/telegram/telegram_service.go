@@ -5,14 +5,19 @@ import (
 	"log"
 
 	"telegram-bot/src/config/env"
+	service "telegram-bot/src/service/gemini"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
-type TelegramService struct{}
+type TelegramService struct {
+	geminiService *service.GeminiService
+}
 
-func NewTelegramService() *TelegramService {
-	return &TelegramService{}
+func NewTelegramService(geminiService *service.GeminiService) *TelegramService {
+	return &TelegramService{
+		geminiService: geminiService,
+	}
 }
 
 func (s *TelegramService) Send() {
@@ -23,19 +28,22 @@ func (s *TelegramService) Send() {
 
 	bot.Debug = true
 
-	fmt.Println("Authorized on account %s", bot.Self.UserName)
-
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
 	updates := bot.GetUpdatesChan(u)
 
-	var responseMsg string
 	for update := range updates {
 		if update.Message != nil {
-			responseMsg = "Ola"
 
-			msg := tgbotapi.NewMessage(update.Message.Chat.ID, responseMsg)
+			sendedMessage := update.Message.Text
+			senderID := fmt.Sprintf("%d", update.Message.Chat.ID)
+			responseMessage, err := s.geminiService.NewMessage(sendedMessage, senderID)
+			if err != nil {
+				responseMessage = err.Error()
+			}
+
+			msg := tgbotapi.NewMessage(update.Message.Chat.ID, responseMessage)
 			msg.ReplyToMessageID = update.Message.MessageID
 
 			if _, err := bot.Send(msg); err != nil {

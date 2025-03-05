@@ -34,7 +34,7 @@ func (s *TelegramService) Send() {
 
 			sendedMessage := update.Message.Text
 
-			model := "gemini-1.5-flash-002" // Ou "gemini-1.5-pro-002" para melhor qualidade
+			model := "gemini-1.5-pro-002" // Ou "gemini-1.5-pro-002" para melhor qualidade
 			result, err := client.GlobalClient.Models.GenerateContent(client.Ctx, model, genai.Text(sendedMessage), nil)
 			response := "Desculpe, não consegui entender o que você disse. Poderia repetir?"
 			if err == nil {

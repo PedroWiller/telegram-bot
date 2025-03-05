@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"log"
 
 	"telegram-bot/src/config/client"
@@ -10,7 +11,19 @@ import (
 	"google.golang.org/genai"
 )
 
-type TelegramService struct{}
+func (c *TelegramService) AddMessage(role, text string) {
+	part := &genai.Part{Text: fmt.Sprintf("%s: %s", role, text)}
+	c.Messages = append(c.Messages, part)
+
+	maxMessages := 10
+	if len(c.Messages) > maxMessages {
+		c.Messages = c.Messages[1:]
+	}
+}
+
+type TelegramService struct {
+	Messages []*genai.Part
+}
 
 func NewTelegramService() *TelegramService {
 	return &TelegramService{}
@@ -34,8 +47,21 @@ func (s *TelegramService) Send() {
 
 			sendedMessage := update.Message.Text
 
+			s.AddMessage("Usuário", sendedMessage)
+
+			contents := make([]*genai.Content, 1)
+			contents[0] = &genai.Content{
+				Parts: s.Messages,
+			}
+
 			model := "gemini-1.5-pro-002" // Ou "gemini-1.5-pro-002" para melhor qualidade
-			result, err := client.GlobalClient.Models.GenerateContent(client.Ctx, model, genai.Text(sendedMessage), nil)
+			result, err := client.GlobalClient.Models.GenerateContent(
+				client.Ctx,
+				model,
+				contents,
+				nil,
+			)
+
 			response := "Desculpe, não consegui entender o que você disse. Poderia repetir?"
 			if err == nil {
 				response, _ = result.Text()

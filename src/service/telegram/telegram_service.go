@@ -1,23 +1,19 @@
 package service
 
 import (
-	"fmt"
 	"log"
 
+	"telegram-bot/src/config/client"
 	"telegram-bot/src/config/env"
-	service "telegram-bot/src/service/gemini"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"google.golang.org/genai"
 )
 
-type TelegramService struct {
-	geminiService *service.GeminiService
-}
+type TelegramService struct{}
 
-func NewTelegramService(geminiService *service.GeminiService) *TelegramService {
-	return &TelegramService{
-		geminiService: geminiService,
-	}
+func NewTelegramService() *TelegramService {
+	return &TelegramService{}
 }
 
 func (s *TelegramService) Send() {
@@ -37,13 +33,15 @@ func (s *TelegramService) Send() {
 		if update.Message != nil {
 
 			sendedMessage := update.Message.Text
-			senderID := fmt.Sprintf("%d", update.Message.Chat.ID)
-			responseMessage, err := s.geminiService.NewMessage(sendedMessage, senderID)
-			if err != nil {
-				responseMessage = err.Error()
+
+			model := "gemini-1.5-flash-002" // Ou "gemini-1.5-pro-002" para melhor qualidade
+			result, err := client.GlobalClient.Models.GenerateContent(client.Ctx, model, genai.Text(sendedMessage), nil)
+			response := "Desculpe, não consegui entender o que você disse. Poderia repetir?"
+			if err == nil {
+				response, _ = result.Text()
 			}
 
-			msg := tgbotapi.NewMessage(update.Message.Chat.ID, responseMessage)
+			msg := tgbotapi.NewMessage(update.Message.Chat.ID, response)
 			msg.ReplyToMessageID = update.Message.MessageID
 
 			if _, err := bot.Send(msg); err != nil {

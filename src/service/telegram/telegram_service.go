@@ -15,7 +15,7 @@ func (c *TelegramService) AddMessage(role, text string) {
 	part := &genai.Part{Text: fmt.Sprintf("%s: %s", role, text)}
 	c.Messages = append(c.Messages, part)
 
-	maxMessages := 2
+	maxMessages := 4
 	if len(c.Messages) > maxMessages {
 		c.Messages = c.Messages[1:]
 	}

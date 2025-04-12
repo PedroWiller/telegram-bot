@@ -133,6 +133,6 @@ func (s *TelegramService) SendMessageToUser() {
 			sendBotMessage(user.ChatId, StartBot(), message)
 		}
 
-		time.Sleep(time.Hour * 24)
+		time.Sleep(time.Minute * 10)
 	}
 }

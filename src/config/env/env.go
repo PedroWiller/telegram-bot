@@ -29,7 +29,7 @@ func Start() error {
 
 	MongoUri = os.Getenv("MONGO_URI")
 	if MongoUri == "" {
-		return fmt.Errorf("Error to load MONGO_URI")
+		MongoUri = "mongodb://localhost:27017/telegram"
 	}
 
 	return nil

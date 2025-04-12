@@ -1,16 +1,16 @@
 version: '3.8'
 
 services:
-  # telegram-bot:
-  #   image: telegram-bot
-  #   build: .
-  #   container_name: telegram-bot
-  #   restart: always
-  #   environment:
-  #     - TELEGRAM_API_TOKEN=${TELEGRAM_API_TOKEN}
-  #     - GEMINI_API_KEY=${GEMINI_API_KEY}
-  #   ports:
-  #     - "3000:8080"
+  telegram-bot:
+    image: telegram-bot
+    build: .
+    container_name: telegram-bot
+    restart: always
+    environment:
+      - TELEGRAM_API_TOKEN=${TELEGRAM_API_TOKEN}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    ports:
+      - "3000:8080"
   mongo:
     image: mongo:latest
     container_name: mongo

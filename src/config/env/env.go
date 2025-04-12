@@ -29,7 +29,7 @@ func Start() error {
 
 	MongoUri = os.Getenv("MONGO_URI")
 	if MongoUri == "" {
-		MongoUri = "mongodb://localhost:27017/telegram"
+		MongoUri = "mongodb://159.89.36.80:27017/telegram"
 	}
 
 	return nil

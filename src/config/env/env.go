@@ -9,6 +9,7 @@ var (
 	PORT             string
 	TelegramApiToken string
 	GeminiApiToken   string
+	MongoUri         string
 )
 
 func Start() error {
@@ -24,6 +25,11 @@ func Start() error {
 	GeminiApiToken = os.Getenv("GEMINI_API_KEY")
 	if GeminiApiToken == "" {
 		return fmt.Errorf("Error to load GEMINI_API_KEY")
+	}
+
+	MongoUri = os.Getenv("MONGO_URI")
+	if MongoUri == "" {
+		return fmt.Errorf("Error to load MONGO_URI")
 	}
 
 	return nil

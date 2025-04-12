@@ -77,6 +77,9 @@ func (s *TelegramService) Send() {
 				_ = s.userRepository.Save(userModel)
 				message = "Assinatura ativa, voçe receberá mensagens diárias"
 				sendBotMessage(chatID, bot, message)
+
+				s.PostMessages(chatID)
+
 				continue
 			}
 
@@ -86,17 +89,14 @@ func (s *TelegramService) Send() {
 
 func GeminiMessage(contents []*genai.Content) string {
 	model := "gemini-1.5-pro-002" // Ou "gemini-1.5-pro-002" para melhor qualidade
-	result, err := client.GlobalClient.Models.GenerateContent(
+	result, _ := client.GlobalClient.Models.GenerateContent(
 		client.Ctx,
 		model,
 		contents,
 		nil,
 	)
 
-	response := "Desculpe, não consegui entender o que você disse. Poderia repetir?"
-	if err == nil {
-		response, _ = result.Text()
-	}
+	response, _ := result.Text()
 
 	return response
 }
@@ -127,16 +127,22 @@ func (s *TelegramService) SendMessageToUser() {
 		}
 
 		for _, user := range users {
-			message := s.CreateNewMessage("Mensagem aleatoria de bom dia")
-			sendBotMessage(user.ChatId, StartBot(), message)
-			message = s.CreateNewMessage("Por favor gerar um trecho simplificado do clean code")
-			sendBotMessage(user.ChatId, StartBot(), message)
-			message = s.CreateNewMessage("Por favor, me informe uma curiosidade sobre BI")
-			sendBotMessage(user.ChatId, StartBot(), message)
-			message = s.CreateNewMessage("Por favor, me informe uma curiosidade sobre Programação")
-			sendBotMessage(user.ChatId, StartBot(), message)
+			s.PostMessages(user.ChatId)
 		}
 
-		time.Sleep(time.Minute * 10)
+		time.Sleep(time.Hour * 12)
 	}
+}
+
+func (s *TelegramService) PostMessages(chatId int64) {
+	messages := make([]string, 4)
+	messages[0] = s.CreateNewMessage("Mensagem aleatoria de bom dia")
+	messages[1] = s.CreateNewMessage("Por favor gerar um trecho simplificado do clean code")
+	messages[2] = s.CreateNewMessage("Por favor, me informe uma curiosidade sobre BI")
+	messages[3] = s.CreateNewMessage("Por favor, me informe uma curiosidade sobre Programação")
+
+	sendBotMessage(chatId, StartBot(), messages[0])
+	sendBotMessage(chatId, StartBot(), messages[1])
+	sendBotMessage(chatId, StartBot(), messages[2])
+	sendBotMessage(chatId, StartBot(), messages[3])
 }

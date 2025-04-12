@@ -41,7 +41,7 @@ func StartBot() *tgbotapi.BotAPI {
 		log.Panic(err)
 	}
 
-	bot.Debug = true
+	bot.Debug = false
 
 	return bot
 }
@@ -129,7 +129,11 @@ func (s *TelegramService) SendMessageToUser() {
 		for _, user := range users {
 			message := s.CreateNewMessage("Mensagem aleatoria de bom dia")
 			sendBotMessage(user.ChatId, StartBot(), message)
-			message = s.CreateNewMessage("Um trecho importante do clean code, simplificada")
+			message = s.CreateNewMessage("Por favor gerar um trecho simplificado do clean code")
+			sendBotMessage(user.ChatId, StartBot(), message)
+			message = s.CreateNewMessage("Por favor, me informe uma curiosidade sobre BI")
+			sendBotMessage(user.ChatId, StartBot(), message)
+			message = s.CreateNewMessage("Por favor, me informe uma curiosidade sobre Programação")
 			sendBotMessage(user.ChatId, StartBot(), message)
 		}
 
